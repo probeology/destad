@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+    <title>bedtime</title>
+    <link href="../styles.css" rel="stylesheet" />
+    <script language="javascript">
+      showing = false;
+
+      function toggleInfo() {
+        if (showing == false) {
+          if (document.all || document.getElementById)
+            document.getElementById("imageinfo").style.visibility = "visible";
+          // IE & Gecko
+          else document.layers["imageinfo"].visibility = "show"; // Netscape 4
+          showing = true;
+        } else {
+          if (document.all || document.getElementById)
+            document.getElementById("imageinfo").style.visibility = "hidden";
+          // IE & Gecko
+          else document.layers["imageinfo"].visibility = "hide"; // Netscape 4
+          showing = false;
+        }
+      }
+      images = parent.frames["index"].document.getElementsByClassName("image");
+      localStorage.setItem("display-image-counter-total", images.length);
+      for (var index = 0; index < images.length; index++) {
+        let imageElement = images[index];
+        imageElement.setAttribute("data-index", index + 1);
+        imageElement.addEventListener("click", (event) => {
+          let target = event.target;
+          const displayImage = document.getElementById("display-image");
+          const displayLink = document.getElementById("display-link");
+          const displayTitle = document.getElementById("display-title");
+          localStorage.setItem("display-image-current", target.dataset.index);
+          localStorage.setItem("display-image-date", target.dataset.date || "");
+          localStorage.setItem("display-image-src", target.src);
+          localStorage.setItem("display-image-title", target.src);
+        });
+      }
+    </script>
+  </head>
+
+  <body id="slide">
+    <br />
+    <span id="display-image-counter"></span>
+    <span id="display-image-date"></span>
+    <b id="display-title"></b>
+
+    <table>
+      <tr valign="TOP">
+        <td width="440">
+          <!-- Image, maybe with link to original -->
+
+          <a id="display-link" target="_blank">
+            <img
+              id="display-image"
+              src=""
+              class="image"
+              width="440"
+              height="330"
+              border="0"
+              alt="Original image"
+            />
+          </a>
+
+          <!-- Always display comment below image (if exists) -->
+
+          <!-- Try to extract the comment from a file carrying the same base name as this image -->
+          <br />
+          <div class="name"></div>
+        </td>
+
+        <!-- Image info button if camera information exists -->
+      </tr>
+    </table>
+
+    <script>
+      const displayImage = document.getElementById("display-image");
+      const displayLink = document.getElementById("display-link");
+      const displayTitle = document.getElementById("display-title");
+      const displayCounter = document.getElementById("display-image-counter");
+      const dateValue = localStorage.getItem("display-image-date");
+      const displayDate = document.getElementById("display-image-date");
+      if (dateValue) {
+        displayDate.innerText = ` | ${dateValue}`;
+      } else displayDate.innerText = "";
+      const src =
+        localStorage.getItem("display-image-src") ||
+        "../content/thumbs/1Easteweekend.jpg";
+      displayCounter.innerText = `${
+        localStorage.getItem("display-image-current") || "1"
+      }/${localStorage.getItem("display-image-counter-total")}`;
+      displayTitle.innerText = `| ${src.split("/").pop().split(".")[0]}`;
+      displayImage.src = src;
+      displayLink.href = src;
+    </script>
+  </body>
+</html>

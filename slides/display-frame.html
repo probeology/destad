@@ -88,6 +88,11 @@
       const src =
         localStorage.getItem("display-image-src") ||
         "../content/thumbs/1Easteweekend.jpg";
+
+      if (!dateValue && src === "../content/thumbs/1Easteweekend.jpg") {
+        displayDate.innerText = "4/28/04 9:32 PM";
+      }
+
       displayCounter.innerText = `${
         localStorage.getItem("display-image-current") || "1"
       }/${localStorage.getItem("display-image-counter-total")}`;
